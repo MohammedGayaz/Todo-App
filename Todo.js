@@ -1,97 +1,129 @@
 const fs = require('fs').promises;
-const {error} = require('console');
+const {error, time} = require('console');
 const path = require('path');
+const {title} = require('process');
 
 const filePath = path.join(__dirname, 'task.json');
 
 class Todo {
-  constructor() {
-    this.taskCounter = 0;
-    this.todoList = [];
-  }
-
-  async readFileData() {
-    try {
-      const stringData = await fs.readFile(filePath);
-      const data = JSON.parse(stringData);
-      return data;
-    } catch (error) {
-      throw error;
+    constructor() {
+        this.taskCounter = 0;
+        this.todoList = [];
     }
-  }
 
-  async writeFileData(data) {
-      console.log("in writeData data:", data)
-    const writeData = JSON.stringify(data);
-    try {
-      await fs.writeFile(filePath, writeData);
-      console.log("File updated");
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async initializeData() {
-    try {
-      const existingData = await this.readFileData();
-        if(existingData.length === 0){
-            console.log("not in existingData")
-            this.todoList = [];
-            this.taskCounter = 0;
+    async readFileData() {
+        try {
+            const stringData = await fs.readFile(filePath);
+            const data = JSON.parse(stringData);
+            return data;
+        } catch (error) {
+            throw error;
         }
-        else{
-            console.log("in existingData")
-            this.todoList = existingData;
-            this.taskCounter = this.todoList[this.todoList.length - 1].id;
-        }
-        console.log("data initialized")
-// return existingData;
-    } catch (error) {
-      throw error;
     }
-  }
 
-  async updateFileData(data) {
-    await this.writeFileData(data);
-  }
+    async writeFileData(data) {
+        const writeData = JSON.stringify(data);
+        try {
+            await fs.writeFile(filePath, writeData);
+            console.log("File updated");
+        } catch (error) {
+            throw error;
+        }
+    }
 
-  // main methods
-  async addTask(title, description) {
-    const task = {
-      id: ++this.taskCounter,
-      title: title,
-      description: description,
-      completed: false,
-    };
-    this.todoList.push(task);
-    await this.updateFileData(this.todoList);
-  }
+    async initializeData() {
+        try {
+            const existingData = await this.readFileData();
+            if(existingData.length === 0){
+                this.todoList = [];
+                this.taskCounter = 0;
+            }
+            else{
+                this.todoList = existingData;
+                this.taskCounter = this.todoList[this.todoList.length - 1].id;
+            }
+            // return existingData;
+        } catch (error) {
+            throw error;
+        }
+    }
 
-  async deleteTask(id) {
-    const index = this.getIndex(id);
-    this.todoList.splice(index, 1);
-    await this.updateFileData(this.todoList);
-  }
+    async updateFileData(data) {
+        await this.writeFileData(data);
+    }
 
-  async updateTask(id, title, description, state) {
-    const index = this.getIndex(id);
-    this.todoList[index] = {
-      id: id,
-      title: title,
-      description: description,
-      completed: state,
-    };
-    await this.updateFileData(this.todoList);
-  }
+    // main methods
+    async addTask(title, description) {
+        const task = {
+            id: ++this.taskCounter,
+            title: title,
+            description: description,
+            completed: false,
+        };
+        this.todoList.push(task);
+        await this.updateFileData(this.todoList);
+    }
 
-  getAll() {
-    return this.todoList;
-  }
+    async deleteTask(id) {
+        try{
+            const index = this.getIndex(id);
+            if (index < 0){
+                throw "invalid index"
+            }
+            else{
+                this.todoList.splice(index, 1);
+                await this.updateFileData(this.todoList);
+            }
+        }
+        catch(error){
+            throw error;
+        }
+    }
 
-  getIdTask(id) {
-    const taskItem = this.todoList.find((item) => item.id === id);
-      return taskItem;
-  }
+    async updateTask(id, state) {
+        try{
+            const index = this.getIndex(id)
+            const title = this.todoList[index].title;
+            const desc = this.todoList[index].description;
+            this.todoList[index] = {
+                id : id,
+                title : title,
+                description: desc,
+                completed: state,
+            };
+            await this.updateFileData(this.todoList);
+        }
+        catch(error){
+            throw error;
+        }
+    }
+
+    getAll() {
+        return this.todoList;
+    }
+
+    getIdTask(id) {
+        try{
+
+            let index = this.getIndex(id)
+            return this.todoList[index];
+        }
+        catch(error){
+            throw error;
+        }
+    }
+
+    getIndex(id) {
+        try{
+            const taskItem = this.todoList.find((item) => item.id === id);
+            const taskIndex = this.todoList.indexOf(taskItem);
+            return taskIndex;
+        }
+        catch(error){
+            throw error;
+        }
+    }
+
 }
 
 module.exports = Todo
@@ -101,17 +133,7 @@ module.exports = Todo
 // await todo.initializeData();
 // console.log("Data initialized");
 
-// await todo.addTask("t2", "d2");
-// await todo.addTask("t3", "d3");
-
-// await todo.deleteTask(2);
-
-// await todo.updateTask(1, "t0", "d0", true)
-
-// console.log(todo.getAll())
-// console.log(todo.getIdTask(2))
-// let data = todo.getIdTask(1)
-// console.log(data)
+// await todo.updateTask(2, true)
 // }
 
 // run();
