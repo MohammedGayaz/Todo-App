@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const {error} = require('console');
 const path = require('path');
 
 const filePath = path.join(__dirname, 'task.json');
@@ -20,6 +21,7 @@ class Todo {
   }
 
   async writeFileData(data) {
+      console.log("in writeData data:", data)
     const writeData = JSON.stringify(data);
     try {
       await fs.writeFile(filePath, writeData);
@@ -32,22 +34,21 @@ class Todo {
   async initializeData() {
     try {
       const existingData = await this.readFileData();
-      this.todoList = existingData || [];
-      if (this.todoList.length > 0)
-        this.taskCounter = this.todoList[this.todoList.length - 1].id;
-      else {
-        this.taskCounter = 0;
-      }
-      return existingData;
+        if(existingData.length === 0){
+            console.log("not in existingData")
+            this.todoList = [];
+            this.taskCounter = 0;
+        }
+        else{
+            console.log("in existingData")
+            this.todoList = existingData;
+            this.taskCounter = this.todoList[this.todoList.length - 1].id;
+        }
+        console.log("data initialized")
+// return existingData;
     } catch (error) {
       throw error;
     }
-  }
-
-  getIndex(id) {
-    const taskItem = this.todoList.find((item) => item.id === id);
-    const taskIndex = this.todoList.indexOf(taskItem);
-    return taskIndex;
   }
 
   async updateFileData(data) {
@@ -88,27 +89,29 @@ class Todo {
   }
 
   getIdTask(id) {
-    const index = this.getIndex(id);
-    return this.todoList[index];
+    const taskItem = this.todoList.find((item) => item.id === id);
+      return taskItem;
   }
 }
 
 module.exports = Todo
 
 // async function run() {
-//   const todo = new Todo();
-//   await todo.initializeData();
-//   console.log("Data initialized");
+// const todo = new Todo();
+// await todo.initializeData();
+// console.log("Data initialized");
 
-//   await todo.addTask("t2", "d2");
-//   await todo.addTask("t3", "d3");
-  
-//   await todo.deleteTask(2);
+// await todo.addTask("t2", "d2");
+// await todo.addTask("t3", "d3");
 
-//   await todo.updateTask(1, "t0", "d0", true)
+// await todo.deleteTask(2);
 
-//   console.log(todo.getAll())
-//   console.log(todo.getIdTask(2))
+// await todo.updateTask(1, "t0", "d0", true)
+
+// console.log(todo.getAll())
+// console.log(todo.getIdTask(2))
+// let data = todo.getIdTask(1)
+// console.log(data)
 // }
 
 // run();
