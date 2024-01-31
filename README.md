@@ -1,16 +1,15 @@
 # Todo Application
-A simple todo application, which lets user to create an account and helps them in being organized by keeping track of the **task list**.
+A simple to-do application lets users create an account and helps them be organized by keeping track of the **task list**.
 
 ## Overview
-This project is Implementaion of a simple todo application.
+This project is the implementation of a simple to-do application.
 using **React js** for front-end frame work,  **Node js (Express)** for back-end and **Tailwind Css** for styling.
 
 ## Features
-**this app will have the following features :**
+**This app will have the following features:**
 - account creation (authentication)
-	> user sign in
-	> user sign up
-- user can create a new todo task.
+	> User sign-in and user sign-up
+- user can create a new to-do task.
 - user can mark a task as completed.
-- user can update  a todo task.
-- user can delete a todo task.
+- user can update  a to-do task.
+- User can delete a to-do task.
