@@ -1,13 +1,10 @@
-export function Todos({todos}){
+// componenet to render a single todo
+
+export function Todos({todo}){
     return <div style={style.todoTask}>
-        {todos.map((task) =>{ 
-            return <div>
-                <h1>{task.title}</h1>
-                <h3>{task.description}</h3>
-                <button>{task.completed == true ? "Done" : "Mark as Done"}</button>
-            </div>
-            })
-        }
+        <h1>{todo.title}</h1>
+        <h3>{todo.description}</h3>
+        <button>{todo.completed == true ? "Done" : "Mark as Done"}</button>
     </div>
 }
 
