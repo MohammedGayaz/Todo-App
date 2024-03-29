@@ -14,11 +14,13 @@ function App() {
   })
   }, [])
   
-
+  function addTodo(newTodo){
+    setTodos([...todos, newTodo])
+  }
 
   return (
     <div>
-      <CreateTodo></CreateTodo>
+      <CreateTodo addTodo={addTodo}></CreateTodo>
       {todos.map( (item) => <Todos todo={item}></Todos> )}
     </div>
   )

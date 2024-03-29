@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export function CreateTodo(){
+export function CreateTodo({addTodo}){
     const [title, setTitle] =  useState("");
     const [description, setDescription] =  useState("");
 
@@ -30,6 +30,10 @@ export function CreateTodo(){
                 const json = await res.json();
                 console.log(json)
                 alert("Todo added Successufully.")
+                addTodo({
+                    title: title,
+                    description: description
+                })
             })
         }} style={style.TodoInput}>Add Todo</button>
     </div>
