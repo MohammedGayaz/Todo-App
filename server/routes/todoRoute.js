@@ -1,5 +1,5 @@
 const express = require("express");
-const { userMiddleware } = require("../middleware/userMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
 const {
   createTask,
   listTasks,
@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.use(userMiddleware);
+router.use(authMiddleware);
 
 router.post("/create", createTask);
 router.get("/tasks", listTasks);
