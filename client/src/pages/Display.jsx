@@ -3,6 +3,7 @@ import { useTodo } from "../context/TaskContext";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import CardWraper from "../wraper/CardWraper";
 
 function Display() {
   const { tasks, setTasks } = useTodo();
@@ -34,13 +35,15 @@ function Display() {
       <button onClick={createTask}>Create Task</button>
       {tasks.map((item) => {
         return (
-          <div key={item._id}>
-            {item.title} - {item.description}
-            <button onClick={() => navigate(`/update/${item._id}`)}>
-              Update
-            </button>
-            <button onClick={() => deleteItem(item, item._id)}>Delete</button>
-          </div>
+          <CardWraper>
+            <div key={item._id}>
+              {item.title} - {item.description}
+              <button onClick={() => navigate(`/update/${item._id}`)}>
+                Update
+              </button>
+              <button onClick={() => deleteItem(item, item._id)}>Delete</button>
+            </div>
+          </CardWraper>
         );
       })}
     </div>

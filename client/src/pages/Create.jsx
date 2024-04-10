@@ -3,6 +3,10 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { useTodo } from "../context/TaskContext";
 import { useNavigate } from "react-router-dom";
+import CardWraper from "../wraper/CardWraper";
+import MainHeading from "../components/MainHeading";
+import InputComponent from "../components/InputComponent";
+import TextArea from "../components/TextArea";
 
 function Create() {
   const [title, setTitle] = useState("");
@@ -31,27 +35,30 @@ function Create() {
   };
 
   return (
-    <div>
-      <form onSubmit={createTask}>
-        <label htmlFor="title">Title:</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          onChange={(e) => setTitle(e.target.value)}
-          required
+    <CardWraper>
+      <div>
+        <InputComponent
+          label={"Title:"}
+          type={"text"}
+          placeholder={"example task"}
+          setTarget={setTitle}
         />
-        <br />
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
-        <br />
-        <input type="submit" value="Create Task" />
-      </form>
-    </div>
+        <TextArea
+          label={"Description:"}
+          placeholder={"example task description"}
+          setTarget={setDescription}
+        />
+
+        <div className="p-5">
+          <button
+            onClick={createTask}
+            className="w-full text-white bg-green-700 hover:bg-green-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2yy"
+          >
+            Create Task
+          </button>
+        </div>
+      </div>
+    </CardWraper>
   );
 }
 

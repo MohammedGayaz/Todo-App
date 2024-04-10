@@ -1,6 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CardWraper from "../wraper/CardWraper";
+import MainHeading from "../components/MainHeading";
+import SubHeading from "../components/SubHeading";
+import InputComponent from "../components/InputComponent";
+import LinkButton from "../components/LinkButton";
 
 function Register() {
   const [name, setName] = useState("");
@@ -18,7 +23,7 @@ function Register() {
     })
       .then((res) => {
         console.log(res.data);
-        navigate("/login");
+        navigate("/");
         setName("");
         setUsername("");
         setPassword("");
@@ -27,25 +32,44 @@ function Register() {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="name">Name: </label>
-        <br />
-        <input type="text" onChange={(e) => setName(e.target.value)} />
-        <br />
+    <CardWraper>
+      <div>
+        <MainHeading title={"Register"} />
+        <SubHeading text={"Enter your information to register."} />
+        <InputComponent
+          label={"Name"}
+          type={"text"}
+          placeholder={"Your Name"}
+          setTarget={setName}
+        />
+        <InputComponent
+          label={"Username"}
+          type={"email"}
+          placeholder={"example@mail.com"}
+          setTarget={setUsername}
+        />
+        <InputComponent
+          label={"Password"}
+          type={"password"}
+          placeholder={"******"}
+          setTarget={setPassword}
+        />
 
-        <label htmlFor="username">Username: </label>
-        <br />
-        <input type="email" onChange={(e) => setUsername(e.target.value)} />
-        <br />
-
-        <label htmlFor="password">Password: </label>
-        <br />
-        <input type="password" onChange={(e) => setPassword(e.target.value)} />
-        <br />
-        <button onClick={registerUser}>Register</button>
-      </form>
-    </div>
+        <div className="p-5">
+          <button
+            onClick={registerUser}
+            className="w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+          >
+            Register
+          </button>
+        </div>
+        <LinkButton
+          text={"Alredy have an Account?"}
+          buttonText={" Sing in"}
+          to={"/"}
+        />
+      </div>
+    </CardWraper>
   );
 }
 
