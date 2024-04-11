@@ -3,7 +3,9 @@ import { useTodo } from "../context/TaskContext";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import CardWraper from "../wraper/CardWraper";
+import Todo from "../components/Todo";
+import TodoContainer from "../wraper/TodoContainer";
+import TodoParentContainer from "../wraper/TodoParentContainer";
 
 function Display() {
   const { tasks, setTasks } = useTodo();
@@ -31,22 +33,26 @@ function Display() {
   };
 
   return (
-    <div>
-      <button onClick={createTask}>Create Task</button>
-      {tasks.map((item) => {
-        return (
-          <CardWraper>
-            <div key={item._id}>
-              {item.title} - {item.description}
-              <button onClick={() => navigate(`/update/${item._id}`)}>
-                Update
-              </button>
-              <button onClick={() => deleteItem(item, item._id)}>Delete</button>
-            </div>
-          </CardWraper>
-        );
-      })}
-    </div>
+    <TodoContainer>
+      <button
+        onClick={createTask}
+        class="m-3 rounded-lg bg-green-600 p-2 px-5 font-bold text-white"
+      >
+        Create
+      </button>
+      <hr />
+      <TodoParentContainer>
+        {tasks.map((item) => (
+          <Todo
+            key={item._id}
+            title={item.title}
+            description={item.description}
+            onUpdate={() => navigate(`/update/${item._id}`)}
+            onDelete={() => deleteItem(item, item._id)}
+          />
+        ))}
+      </TodoParentContainer>
+    </TodoContainer>
   );
 }
 
